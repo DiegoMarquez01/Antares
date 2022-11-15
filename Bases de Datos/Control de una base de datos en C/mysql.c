@@ -3,6 +3,8 @@
 #include <string.h>
 #include <stdlib.h>
 
+
+//main
 int main (int argc, char **argv){
     unsigned int i = 0;
     char buffer[1024];
