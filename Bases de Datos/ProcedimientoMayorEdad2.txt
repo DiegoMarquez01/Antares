@@ -1,0 +1,20 @@
+delimiter $
+
+create procedure MayorEdad2(out Pnombre char(100), out MayorEdad int)
+
+begin
+
+	declare ed int;
+	declare nom char(100);
+	declare CursorPresidente CURSOR FOR select Nombre, Edad from VedadP order by edad desc limit 1;
+	
+	OPEN CursorPresidente;
+	     fetch CursorPresidente into nom, ed;
+	CLOSE CursorPresidente;
+
+	set Pnombre = nom;
+	set MayorEdad = ed;
+
+end$
+
+delimiter ;

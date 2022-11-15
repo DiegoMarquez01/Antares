@@ -1,0 +1,61 @@
+1.
+
+select a.nombre, count(b.actorID) as actores from producciones a left join actores_producciones b
+using(produccionID) group by a.nombre order by actores desc limit 1;
+
+2.
+
+select count(*) as Producciones_tipo_pelicula from (select a.produccionID from producciones a
+left join tipoProduccion b using(tipoProduccionID) where b.tipo = "Película") as tabla;
+
+3.
+
+select count(*) as Series_con_mas_de_6_temporadas from (select a.produccionID from producciones a
+left join tipoProduccion b using(tipoProduccionID) where b.tipo = "Serie TV" AND
+ a.temporadas > 6) as tabla;
+
+4.
+
+select count(*) as Creadores_sin_produccion from (select creadorID from creadores a left join
+creador_producciones b using(creadorID) where produccionID is null) as tabla;
+
+5.
+
+delimiter $
+
+create procedure
+
+delimiter ;
+
+
+
+
+6.
+
+select count(*) as producciones_entre_6_y_12_temporadas from (select a.produccionID from
+producciones a left join tipoProduccion b using(tipoProduccionID) where a.temporadas >=6
+AND a.temporadas <=12) as tabla;
+
+7.
+
+select count(*) as Producciones_entre_1980_y_2004 from (select a.produccionID from producciones a
+left join productora b using(productoraID) where b.productora = "20th Century Fox Television" AND
+a.anioInicio >= 1980 AND a.anioFin <= 2004) as tabla;
+
+8.
+
+select count(*) as Actores_de_USA from (select a.actorID from actores a left join pais b
+using(paisID) where b.pais = "USA") as tabla;
+
+9.
+
+select c.pais as Pais from producciones a left join pais_producciones b using(produccionID)
+left join pais c ON b.paisID = c.paisID group by c.pais order by count(a.productoraID) desc limit 2;
+
+10.
+
+select count(a.productoraID) as Producciones from producciones a left join
+pais_producciones b using(produccionID) left join pais c ON b.paisID = c.paisID group by
+c.pais order by count(a.productoraID) desc limit 2;
+
+

@@ -1,0 +1,21 @@
+delimiter $
+
+Create function factorialWhile (numero int) returns int
+
+begin
+    declare resultado, contador int ;
+    set resultado = 1;
+    set contador = 1;
+
+    while
+	contador > numero do
+
+	set resultado = resultado * contador;
+        set contador = contador + 1;
+
+    end while;
+
+    return resultado;
+end $
+
+delimiter ;

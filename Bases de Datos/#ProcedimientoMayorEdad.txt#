@@ -1,0 +1,24 @@
+
+/*
+
+Procedimiento que calcula quien es el
+precidente de mayor edad de la tabla
+presidentes
+
+*/
+
+delimiter $
+
+create procedure MayorEdad(out nombre varchar(50), out MayorEdad int)
+
+begin
+
+	declare edad int;
+	declare nom varchar(50);
+
+	
+
+end$
+
+
+delimiter ;

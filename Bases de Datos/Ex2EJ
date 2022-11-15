@@ -1,0 +1,49 @@
+1. 
+select count(*) as Conductores_con_mas_faltas from (select a.conductorID, count(b.ausenciaID) as numero_ausencias from conductores a 
+left join ausencias b using(conductorID) group by a.conductorID having count(b.ausenciaID) = (select count(b.ausenciaID) as numero_ausencias from conductores a 
+left join ausencias b using(conductorID) group by a.conductorID order by numero_ausencias desc limit 1)) as tabla;
+
+
+2. 
+
+select a.nombre, d.inicio, d.fin, b.registro, d.nombre from conductores a left join conductoresEstaciones b using(conductorID) 
+left join rutasEstaciones c using(estacionID) left join rutas d ON c.rutaID = d.rutaID where b.registro = 0 AND d.nombre = "Línea 1";
+
+
+3.
+
+select count(estacionID) as estaciones from rutasEstaciones group by rutaID having estaciones = ( select count(estacionID) as estaciones 
+from rutasEstaciones group by rutaID order by estaciones desc limit 1);
+
+
+4.
+
+ select concat(nombre, ' ',apPaterno, ' ', apMaterno) as Conductor from conductores left join conductoresCamiones using(conductorID) where 
+inicio = "2018-09-21 07:00:00" AND fin = " 2018-09-21 15:00:00" AND  camionID = 35;
+
+
+5.
+
+select count(*) as camiones_no_usados_en_3_anios from (select camionID from conductoresCamiones where year(curdate()) - year(fin) = 3) as tabla;
+
+
+6.
+
+select count(DISTINCT conductorID) as conductores, count(DISTINCT estacionID) as estaciones, rutaID from rutasEstaciones left join 
+conductores using(rutaID) group by rutaID having estaciones = (select count(estacionID) as estaciones from rutasEstaciones 
+group by rutaID order by estaciones asc limit 1);
+
+ select count(DISTINCT conductorID) as conductores from rutasEstaciones left join conductores using(rutaID) group by rutaID having 
+count(DISTINCT estacionID) = (select count(estacionID) as estaciones from rutasEstaciones group by rutaID order by estaciones asc limit 1);
+
+
+7.
+
+select count(*) as Conductores from (select conductorID from conductores where day(fechaNacimiento) >= day(curdate()) AND day(fechaNacimiento) <=  day(curdate())
++10 AND  month(fechaNacimiento) = 11) as tabla;
+
+
+8.
+
+select nombre as Linea from (select sum(a.transbordo), c.nombre from estaciones a left join rutasEstaciones b using(estacionID) left join 
+rutas c using(rutaID) group by rutaID order by sum(a.transbordo) desc limit 1) as tabla;

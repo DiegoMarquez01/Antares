@@ -1,0 +1,24 @@
+delimiter $
+
+create function potenciaRepeat(base int, exponente int) returns int
+
+begin
+        declare resultado, contador int;
+
+        set resultado = 1;
+        set contador = 1;
+
+        pot: repeat
+
+             set resultado = resultado * base;
+             set contador = contador + 1;
+
+             until contador > exponente 
+
+        end repeat pot;
+
+       return resultado;
+
+end $
+
+delimiter ;

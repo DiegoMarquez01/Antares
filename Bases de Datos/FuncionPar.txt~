@@ -1,0 +1,15 @@
+delimiter $
+
+create function Par(num int) return int
+
+begin
+
+	if num % 2 = 0 then
+
+	   signal sqlstate '4500' set message_text = "numero par";
+
+        end if;
+
+end$
+
+delimiter ;

@@ -1,0 +1,14 @@
+
+
+
+delimiter $
+
+create procedure anio(anio_nacimiento int)
+
+begin
+
+	select nombre, ap_paterno from presidentes where year(nacimiento) = anio_nacimiento; 
+
+end$
+
+delimiter ;

@@ -1,0 +1,8 @@
+SQL1.out: mysql.o
+        gcc -o SQL1.out  mysql.o -lmysqlclient -lnsl -lm -lz
+
+ mysql.o: mysql.c
+        gcc -c  mysql.c
+
+clean:
+        rm *.o

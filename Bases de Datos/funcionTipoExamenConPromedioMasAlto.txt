@@ -1,0 +1,92 @@
+
+/*
+
+Procedimiento que devuelve el tipo de examen
+con el promedio mas alto
+
+*/
+
+
+delimiter $
+
+create procedure Tipo(@Examen)
+
+begin
+
+	declare cont, suma, salida, num, promedio, max int;
+	declare exm, extipe char(50);
+
+	delclare CursorCalificacion CURSOR FOR select calificacion from VTiposExamen;
+	declare CursorExamen CURSOR FOR select Tipo from VTiposExamen where Tipo = exm;
+
+	DECLARE CONTINUE HANDLER FOR NOT FOUND
+   	 SET salida = 1;
+
+	set suma = 0;
+	set cont = 0;
+	set num = 0;
+	set promedio = 0;
+        set max = 0;
+	set salida = 0;
+
+	OPEN CursorExamen
+
+	     examenes: REPEAT
+
+	     fetch CursorExamen into exm;
+
+	     if salida = 1 then
+	     	leave examenes;
+	     end if;
+
+	     OPEN CursorCalificacion
+
+	     	  calificaciones: REPEAT
+
+		  		  fetch CursorCalificacion into num;
+
+				  if salida = 1 then
+				     leave calificaciones;
+				  end if;
+
+				  set suma = suma + num;
+				  set cont = cont + 1;
+
+		  until salida = 1;
+		  END REPEAT calificaciones;
+
+	     CLOSE CursorCalificacion;
+
+	     set salida = 0;
+
+	     if cont > 0 then
+	     	set promedio = suma / cont;
+	     end if;
+
+	     if promedio > max then
+	     	set extipe = exm;
+             end if;
+
+	     set cont = 0;
+	     set suma = 0;
+
+	     until salida = 1;
+	     END REPEAT examenes;
+
+	CLOSE CursorExamen;
+
+	if extipe = 's' then
+	   set Examen = 'Semanal';
+	end if;
+
+	 if extipe = 'M' then
+           set Examen = 'Mensual';
+        end if;
+
+	 if extipe = 'F' then
+           set Examen = 'Final';
+        end if;
+
+end$
+
+delimiter ;

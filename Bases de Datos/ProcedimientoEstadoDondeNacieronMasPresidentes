@@ -1,0 +1,76 @@
+/*
+
+Procedimiento que devuelve el estado
+donde nacieron mas presidentes y el numero
+de precidentes nacidos
+
+
+*/
+
+delimiter $
+
+create procedure Estadonacimiento(out EstadoNacimiento char(50), out CantidadNacimiento int)
+
+begin
+
+        declare cant, num, presid, salida int;
+        declare est char(50);
+
+        declare CursorEstado CURSOR FOR select estado from VestadoP;
+        declare CursorNacidos CURSOR FOR select numero from VestadoP where estado = est;
+
+        declare continue handler for not found
+        set salida = 1;
+
+        set cant = 0;
+        set num = 0;
+        set salida = 0;
+        set presid = 0;
+
+        OPEN CursorEstado;
+
+             estados: repeat
+
+                fetch CursorEstado into est;
+
+                if salida = 1 then
+                   leave estados;
+                end if;
+
+                OPEN CursorNacidos;
+
+                     nacimientos: repeat
+
+                                  fetch CursorNacidos into num;
+
+                                  if salida = 1 then
+                                     leave nacimientos;
+                                  end if;
+
+                                  set cant = num;
+
+                     until salida = 1
+                     end repeat nacimientos;
+
+                CLOSE CursorNacidos;
+
+             set salida = 0;
+
+             if cant > presid then
+                set EstadoNacimiento = est;
+                set presid = cant;
+             end if;
+
+             set cant = 0;
+
+             until salida = 1
+             end repeat estados;
+
+
+        CLOSE CursorEstado;
+
+        set CantidadNacimiento = presid;
+
+end$
+
+delimiter ;

@@ -1,0 +1,20 @@
+delimiter $
+
+Create function factorial (numero int) returns int
+
+begin
+    declare resultado, contador int ;
+    set resultado = 1;
+    set contador = 1;
+
+    loop
+        set resultado = resultado * contador;
+        set contador = contador + 1;
+
+        until contador > numero
+    end loop;
+
+    return resultado;
+end $
+
+delimiter ;

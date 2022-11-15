@@ -1,0 +1,31 @@
+/*
+
+Desarrollar una función que devuelva el número de años completos que hay entre
+dos fechas que se pasan como argumentos
+
+*/
+
+delimiter $
+
+create function fechas(anio1 date, anio2 date) returns int
+
+begin
+
+	declare result int;
+	declare errors varchar(20);
+	
+	set errors = 'Error';
+
+	if year(anio1) > year(anio2) then
+
+	   print errors;
+
+	   else set result = year(anio2) - year(anio1);
+
+       else if;
+       
+	   return result;
+
+end$
+
+delimiter ;

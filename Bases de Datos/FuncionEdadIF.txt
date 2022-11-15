@@ -1,0 +1,23 @@
+delimiter $
+          Create function edad2(date1 DATE, date2 DATE)
+          returns int
+          no sql
+
+          Begin
+                Declare age int;
+
+		CASE
+
+			when date2 is NULL then
+
+		   	set age = (YEAR(curdate()) - YEAR(date1)) - IF(Right(date2,5) < Right(date1,5),1,0);
+
+		   	else
+
+				set age = (YEAR(date2) - YEAR(date1)) - IF(Right(date2,5) < Right(date1,5),1,0);
+
+		end case;
+		 
+		   Return age;
+          End$
+delimiter ;

@@ -1,0 +1,13 @@
+delimiter $
+Create function edad(date1 DATE, date2 DATE)
+returns int
+no sql
+Begin
+Declare age int;
+set age = (YEAR(date2) - YEAR(date1)) - IF(Right(date2,5) < Right(date1,5),1,0);
+Return age;
+End$
+delimiter ;
+
+
+/* delimiter ;*/

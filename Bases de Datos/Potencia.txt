@@ -1,0 +1,28 @@
+delimiter $
+
+create function potencia(base int, exponente int) returns int
+
+begin
+	declare resultado, contador int;
+
+	set resultado = 1;
+	set contador = 1;
+
+	pot: loop
+
+	     set resultado = resultado * base;
+	     set contador = contador + 1;
+
+	     if contador > exponente then
+
+	     	leave pot;
+
+	     end if;
+
+       end loop pot;
+
+       return resultado;
+
+end $
+
+delimiter ;

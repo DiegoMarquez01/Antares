@@ -1,0 +1,32 @@
+DELIMITER $
+create procedure MejorPromedio2(OUT mejor_promedio DECIMAL(4,2), OUT mejor_Alumno VARCHAR(50))
+
+Begin
+    
+    #variables
+    Declare prom DECIMAL(4,2); #nombres distintos a columnas del query
+    Declare nombreAlumno VARCHAR(25);
+    
+    #condicion
+    #Declare 'not found' condition for not found /*el query regresa un solo renglon por lo que no necesitamos usar un not found*/
+    
+    #manejador
+    Declare CursorPromedios cursor for select Nombre, avg(calificacion)as Promedio from vcalificaciones group by Nombre order by Promedio desc limit 1; #Query en la que el cursor obtendra informacion
+                                       /*Nombre y promedio mas alto*/                 
+    
+    #inicializamos variable
+    set prom = 0;
+    
+    Open CursorPromedios; #abrimos cursor 
+    
+        Fetch CursorPromedios into nombreAlumno, prom; #guardamos nombre y el maximo promedio
+        
+    Close CursorPromedios; #cerramos cursor 
+    
+    #guardamos los resultados en las variables de regreso  
+    set mejor_promedio = prom;
+    set mejor_Alumno = nombreAlumno;
+    
+End$
+DELIMITER ;
+

@@ -1,0 +1,48 @@
+/*
+
+Tabla Productos
+
+*/
+
+
+create table Productos(
+
+	id_Producto int primary key not null autoincrement,
+	Nombre varchar(50),
+	Precio decimal(4,2),
+	Descripcion varchar(200),
+	references Compra (id_Compra) on delete update cascade,
+	references Departamento (id_Departamento) on delete update cascade
+);
+
+
+/*
+
+Tabla Compras
+
+*/
+
+create table Compras(
+
+	id_Compra int primary key not null autoincrement,
+	Fecha_de_compra DATE,
+	Tipo_de_pago enum ('Credito','Debito'),
+	references Asesor (id_Asesor) on delete update cascade,
+	references Cliente (id_Cliente) on delete update cascade,
+	references Estatus_Compra (id_Estado) on delete update cascade
+);
+
+
+
+/*
+
+Tabla Estatus_Compra
+
+*/
+
+create table Estatus_Compra(
+
+	id_Estado int primary key not null autoincrement,
+	Estatus enum ('Cancelada','Devuelta', 'Entregada')
+);
+

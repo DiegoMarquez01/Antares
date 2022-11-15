@@ -1,0 +1,129 @@
+delimiter $
+
+create procedure PEstado(out MesM char(50), out NumMax int)
+
+begin
+
+        declare n, num, cant, salida int;
+        declare Nmes, i char(50);
+
+        declare CursorMes CURSOR FOR select monthname(muerte)as Mes from presidentes where muerte is not null group by Mes;
+	 declare CursorCantidad CURSOR FOR select count(*)as Numero, monthname(muerte)as Mes from presidentes where muerte is not NULL group by Mes having Mes = Nmes;
+
+        declare continue handler for not found
+        set salida = 1;
+
+        set n = 0;
+        set num = 0;
+        set salida = 0;
+	 set cant = 0;
+
+        OPEN CursorMes;
+
+             meses: repeat
+
+                      fetch CursorMes into Nmes;
+
+                      if salida = 1 then
+                         leave meses;
+                      end if;
+
+			 OPEN CursorCantidad;
+			  	
+				cantidad: repeat				
+
+					fetch CursorCantidad into n, i;
+
+					if salida = 1 then
+                                  		leave cantidad;
+                      		end if;
+					
+					set n = cant;
+					 
+				until salida = 1
+				end repeat cantidad;
+	
+			 CLOSE CursorCantidad;					
+                      set salida = 0; 
+
+
+                      if cant > num then
+                      	set cant = num;
+                        	set MesM = Nmes;
+               	 end if;
+
+                      set cant = 0;
+			   
+             until salida = 1
+             end repeat meses;
+
+        CLOSE CursorMes;
+
+        set NumMax = num;
+end$
+
+delimiter ;delimiter $
+
+create procedure PEstado(out MesM char(50), out NumMax int)
+
+begin
+
+        declare n, num, cant, salida int;
+        declare Nmes, i char(50);
+
+        declare CursorMes CURSOR FOR select monthname(muerte)as Mes from presidentes where muerte is not null group by Mes;
+	 declare CursorCantidad CURSOR FOR select count(*)as Numero, monthname(muerte)as Mes from presidentes where muerte is not NULL group by Mes having Mes = Nmes;
+
+        declare continue handler for not found
+        set salida = 1;
+
+        set n = 0;
+        set num = 0;
+        set salida = 0;
+	 set cant = 0;
+
+        OPEN CursorMes;
+
+             meses: repeat
+
+                      fetch CursorMes into Nmes;
+
+                      if salida = 1 then
+                         leave meses;
+                      end if;
+
+			 OPEN CursorCantidad;
+			  	
+				cantidad: repeat				
+
+					fetch CursorCantidad into n, i;
+
+					if salida = 1 then
+                                  		leave cantidad;
+                      		end if;
+					
+					set n = cant;
+					 
+				until salida = 1
+				end repeat cantidad;
+	
+			 CLOSE CursorCantidad;					
+                      set salida = 0; 
+
+
+                      if cant > num then
+                      	set cant = num;
+                        	set MesM = Nmes;
+               	 end if;
+
+                      set cant = 0;
+			   
+             until salida = 1
+             end repeat meses;
+
+        CLOSE CursorMes;
+
+        set NumMax = num;
+end$
+
+delimiter ;

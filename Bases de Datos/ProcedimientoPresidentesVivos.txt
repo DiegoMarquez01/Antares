@@ -1,0 +1,46 @@
+delimiter $
+
+create procedure PresidentesVivos(out vivios int, out muertos int)
+
+begin
+
+        declare Pv, Pm, salida int;
+        declare fecha date;
+
+        declare CursorPresidente CURSOR FOR select muerte from presidentes;
+
+        declare continue handler for not found
+        set salida = 1;
+
+        set Pv = 0;
+        set Pm = 0;
+        set salida = 0;
+
+        OPEN CursorPresidente;
+
+             presidente: repeat
+                         fetch CursorPresidente into fecha;
+
+                         if salida = 1 then
+                            leave presidente;
+                         end if;
+
+                         CASE
+
+                                when fecha is not null then set Pm = Pm + 1;
+                                else set Pv = Pv + 1;
+
+                         END CASE;
+
+             until salida = 1
+             end repeat presidente;
+
+             set salida = 0;
+        CLOSE CursorPresidente;
+
+        set vivios = Pv;
+        set muertos = Pm;
+
+end$
+
+delimiter ;

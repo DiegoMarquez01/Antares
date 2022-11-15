@@ -1,0 +1,86 @@
+
+/*
+
+Procedimiento que calcula quien es el
+precidente de mayor edad de la tabla
+presidentes
+
+*/
+
+delimiter $
+
+create procedure MayorEdad(out Pnombre varchar(50), out MayorEdad int)
+
+begin
+
+	declare salida, edad, mayor, n, m int, mayored;
+	declare nom varchar(50);
+
+	declare CursorEdades for select nacimiento, muerte from presidentes;	
+	declare CursorNombres for  select concat(nombre, ' ', ap_paterno) from presidentes;
+
+	declare continue handler for not found
+	set salida = 1;
+
+	set mayor = 0;
+	set mayored = 0;
+	set salida = 0;
+
+	Open CursorNombres;
+
+	nombres: repeat
+
+		 fetch CursorNombres into nom;
+
+		 if salida = 1 then
+	   	    leave nombres;
+		 end if;
+
+		 open CursorEdades:
+
+		 ed: repeat
+	
+			fetch CursorEdades into n, m;
+
+	     		if salida = 1 then
+	     		   leave ed;
+	     		end if;
+			
+			 CASE
+
+				when m is NULL then
+
+                        	     set edad = (YEAR(curdate()) - YEAR(n)) - IF(Right(m,5) < Right(n,5),1,0);
+
+                        	else
+
+				     set edad = (YEAR(m) - YEAR(n)) - IF(Right(m,5) < Right(n,5),1,0);
+
+                	END CASE;
+
+			set mayor = mayor + edad;
+
+		until salida = 1;
+       		end repeat ed:
+
+		close CursorEdades;
+		set salida = 0;
+
+		if mayored < mayor then
+		   set mayored = mayor;
+		   set Pnombre = nom;
+		end if;
+
+		set mayor = 0; 
+
+	until salida = 1;
+	end repeat nombres:
+
+	close CursorNombres;
+
+	set MayorEdad;
+
+end$
+
+
+delimiter ;

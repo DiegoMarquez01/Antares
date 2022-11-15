@@ -1,0 +1,20 @@
+delimiter $
+
+create procedure Par(out msj varchar(50), num int)
+
+begin
+
+	declare message_text varchar(50);
+	
+	if num % 2 = 0 then
+
+	   set message_text = "numero par";
+
+	   else set message_text = "numero impar";
+	   
+        end if;
+
+	set msj = message_text;
+end$
+
+delimiter ;
